@@ -35,11 +35,8 @@ flowchart TD
     D -->|S3 interaction| E
     E -->|S3 API calls| S3[(S3 Storage)]
     
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style C fill:#ffe1e1
-    style D fill:#e1ffe1
-    style E fill:#f0e1ff
+    classDef layerStyle stroke-width:2px
+    class A,B,C,D,E layerStyle
 ```
 
 ---
@@ -210,10 +207,10 @@ flowchart TD
     CheckRemaining -->|No| BufferRest
     BufferRest --> Done
     
-    style FillBuffer fill:#e1f5ff
-    style CommitPart fill:#ffe1e1
-    style UploadDirect fill:#ffe1e1
-    style BufferRest fill:#e1f5ff
+    classDef memoryOp stroke-width:2px,stroke-dasharray: 5 5
+    classDef networkOp stroke-width:3px
+    class FillBuffer,BufferRest memoryOp
+    class CommitPart,UploadDirect networkOp
 ```
 
 ```cpp
@@ -284,9 +281,10 @@ flowchart TD
     MultipartParts --> MultipartComplete
     MultipartComplete -->|During close| FileVisible
     
-    style Small fill:#e1f5ff
-    style Large fill:#ffe1e1
-    style FileVisible fill:#90EE90
+    classDef modeStyle stroke-width:2px
+    classDef finalStyle stroke-width:3px
+    class Small,Large modeStyle
+    class FileVisible finalStyle
 ```
 
 #### Mode 1: Small Files (< 10 MB)
@@ -335,12 +333,12 @@ flowchart TD
     E -->|Upload part N<br/>remaining data| F
     F -->|Finalize during close<br/>File becomes visible| S3[(File visible on S3)]
     
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style C fill:#fff4e1
-    style E fill:#fff4e1
-    style F fill:#e1ffe1
-    style S3 fill:#90EE90
+    classDef initStyle stroke-width:2px
+    classDef uploadStyle stroke-width:2px,stroke-dasharray: 3 3
+    classDef completeStyle stroke-width:3px
+    class A initStyle
+    class B,C,E uploadStyle
+    class F,S3 completeStyle
 ```
 
 **Characteristics:**
@@ -414,10 +412,10 @@ flowchart TD
     
     Cleanup --> Done
     
-    style CommitLast fill:#ffe1e1
-    style CompleteMP fill:#90EE90
-    style UploadSingle fill:#e1f5ff
-    style Done fill:#90EE90
+    classDef uploadStyle stroke-width:2px
+    classDef completeStyle stroke-width:3px
+    class CommitLast,UploadSingle,UploadEmpty uploadStyle
+    class CompleteMP,Done completeStyle
 ```
 
 ### Step 1: Ensure Ready to Flush
