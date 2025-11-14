@@ -1,5 +1,7 @@
 # Parquet Writer Implementations Comparison
 
+> 📖 **See also**: [README.md](README.md) for project overview and [ARCHITECTURE.md](ARCHITECTURE.md) for architecture details.
+
 This document compares the two different Parquet writer implementations available in this project.
 
 ## Overview
@@ -99,6 +101,23 @@ writer.close()
 
 ## Performance Comparison
 
+```mermaid
+flowchart LR
+    subgraph Local["PyArrowParquetBlockWriter (local)"]
+        L1[Write DataFrame blocks] --> L2[Local Parquet File]
+        L2 --> L3[Upload to S3]
+        L3 --> L4[S3 Bucket]
+    end
+    
+    subgraph Streaming["S3StreamingParquetWriter (s3_streaming)"]
+        S1[Write DataFrame blocks] --> S2[Stream directly to S3]
+        S2 --> S3[S3 Bucket]
+    end
+    
+    style Local fill:#fff4e1
+    style Streaming fill:#e8f5e9
+```
+
 | Feature | Local | S3 Streaming |
 |---------|-------|--------------|
 | **Disk Space** | Required | Not required |
@@ -188,3 +207,10 @@ writer.close()
    - PyArrow handles multipart uploads automatically
    - Default part size is managed by PyArrow based on data size
    - No manual buffer tuning needed
+
+## Related Documentation
+
+- **[README.md](README.md)** - Project overview and main documentation
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architecture documentation
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide
+- **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into how ParquetWriter works with S3

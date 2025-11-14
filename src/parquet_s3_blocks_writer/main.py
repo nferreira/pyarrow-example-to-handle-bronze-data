@@ -5,12 +5,25 @@ import sys
 import time
 from pathlib import Path
 
-from .config import get_app_config, get_s3_config
-from .data_generator import DataGenerator
-from .parquet_writer import PyArrowParquetBlockWriter
-from .parquet_writer_interface import ParquetBlockWriter
-from .s3_streaming_parquet_writer import S3StreamingParquetWriter
-from .s3_uploader import S3Uploader
+# Handle both direct execution and module import
+try:
+    from .config import get_app_config, get_s3_config
+    from .data_generator import DataGenerator
+    from .parquet_writer import PyArrowParquetBlockWriter
+    from .parquet_writer_interface import ParquetBlockWriter
+    from .s3_streaming_parquet_writer import S3StreamingParquetWriter
+    from .s3_uploader import S3Uploader
+except ImportError:
+    # Add src directory to path for direct execution
+    src_dir = Path(__file__).parent.parent
+    if str(src_dir) not in sys.path:
+        sys.path.insert(0, str(src_dir))
+    from parquet_s3_blocks_writer.config import get_app_config, get_s3_config
+    from parquet_s3_blocks_writer.data_generator import DataGenerator
+    from parquet_s3_blocks_writer.parquet_writer import PyArrowParquetBlockWriter
+    from parquet_s3_blocks_writer.parquet_writer_interface import ParquetBlockWriter
+    from parquet_s3_blocks_writer.s3_streaming_parquet_writer import S3StreamingParquetWriter
+    from parquet_s3_blocks_writer.s3_uploader import S3Uploader
 
 # Configure logging
 logging.basicConfig(

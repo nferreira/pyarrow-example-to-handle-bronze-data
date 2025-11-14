@@ -2,6 +2,8 @@
 
 Get up and running with Parquet S3 Blocks Writer in under 5 minutes!
 
+> 📖 **See also**: [README.md](README.md) for full documentation and [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture information.
+
 ## Prerequisites
 
 - Python 3.13+
@@ -39,7 +41,13 @@ cp .env.example .env
 docker-compose up -d
 
 # 4. Run the application
+# Standard writer (production)
 poetry run parquet-s3-writer
+# Or using module syntax
+poetry run python -m parquet_s3_blocks_writer.main
+
+# Generator example (educational)
+poetry run python -m parquet_s3_blocks_writer.generator.main
 ```
 
 ## Verify Installation
@@ -167,9 +175,12 @@ Start Docker Desktop or your Docker daemon before running LocalStack.
 ## Next Steps
 
 - Read the full [README.md](README.md) for detailed documentation
+- Explore [ARCHITECTURE.md](ARCHITECTURE.md) to understand the system design
+- Check [WRITERS_COMPARISON.md](WRITERS_COMPARISON.md) to compare writer implementations
 - Modify the data schema in `src/parquet_s3_blocks_writer/data_generator.py`
 - Add custom processing logic in `src/parquet_s3_blocks_writer/main.py`
 - Configure for AWS S3 instead of LocalStack (see README)
+- Try the generator example: `poetry run python -m parquet_s3_blocks_writer.generator.main`
 
 ## Getting Help
 

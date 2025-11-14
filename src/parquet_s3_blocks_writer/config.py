@@ -22,10 +22,32 @@ class S3Config:
 
     @classmethod
     def from_env(cls) -> "S3Config":
-        """Load S3 configuration from environment variables."""
+        """Load S3 configuration from environment variables.
+        
+        Supports both LocalStack and AWS S3 configurations:
+        - If USE_LOCALSTACK=true, uses LOCALSTACK_ENDPOINT_URL
+        - Otherwise, uses S3_ENDPOINT_URL (or None for AWS S3)
+        - Supports both AWS_REGION and AWS_DEFAULT_REGION
+        """
+        # Check if LocalStack should be used
+        use_localstack = os.getenv("USE_LOCALSTACK", "true").lower() == "true"
+        
+        # Determine endpoint URL
+        if use_localstack:
+            endpoint_url = os.getenv(
+                "LOCALSTACK_ENDPOINT_URL", 
+                os.getenv("S3_ENDPOINT_URL", "http://localhost:4566")
+            )
+        else:
+            # For AWS S3, use S3_ENDPOINT_URL if provided, otherwise None
+            endpoint_url = os.getenv("S3_ENDPOINT_URL") or None
+        
+        # Support both AWS_REGION and AWS_DEFAULT_REGION
+        region_name = os.getenv("AWS_DEFAULT_REGION") or os.getenv("AWS_REGION", "us-east-1")
+        
         return cls(
-            endpoint_url=os.getenv("S3_ENDPOINT_URL", "http://localhost:4566"),
-            region_name=os.getenv("AWS_REGION", "us-east-1"),
+            endpoint_url=endpoint_url,
+            region_name=region_name,
             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID", "test"),
             aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY", "test"),
             bucket_name=os.getenv("S3_BUCKET_NAME", "parquet-data-bucket"),

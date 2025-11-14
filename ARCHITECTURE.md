@@ -1,5 +1,7 @@
 # Architecture Overview
 
+> 📖 **See also**: [README.md](README.md) for project overview and [QUICKSTART.md](QUICKSTART.md) for getting started quickly.
+
 ## Block-Based Parquet Writing
 
 This application uses a block-based approach to write Parquet files, allowing for efficient memory usage and streaming of large datasets.
@@ -107,48 +109,25 @@ Handles uploading files to S3 with:
 
 ## Data Flow
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Main Application                          │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  DataGenerator.generate_dataframe_blocks()                   │
-│  ├─ Yields DataFrame blocks (e.g., 10k records each)        │
-│  └─ Memory efficient - only one block in memory at a time   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  PyArrowParquetBlockWriter                                   │
-│  ├─ start_writing() - Initialize ParquetWriter              │
-│  ├─ write_block(df) - Convert df to PyArrow, write row group│
-│  │   ├─ Validates schema consistency                        │
-│  │   └─ Writes to same Parquet file                         │
-│  ├─ finish_writing() - Close writer, return stats           │
-│  └─ close() - Cleanup resources                             │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-                  ┌───────────────────┐
-                  │  Parquet File     │
-                  │  (data.parquet)   │
-                  └───────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  S3Uploader                                                  │
-│  ├─ create_bucket_if_not_exists()                           │
-│  ├─ upload_file() - Multipart upload for large files        │
-│  └─ Returns upload statistics                               │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-                  ┌───────────────────┐
-                  │  S3 Bucket        │
-                  │  (LocalStack/AWS) │
-                  └───────────────────┘
+```mermaid
+flowchart TD
+    A[Main Application] --> B[DataGenerator.generate_dataframe_blocks]
+    B -->|Yields DataFrame blocks<br/>10k records each<br/>Memory efficient| C[PyArrowParquetBlockWriter]
+    C -->|start_writing<br/>Initialize ParquetWriter| D[Parquet File<br/>data.parquet]
+    C -->|write_block<br/>Convert df to PyArrow<br/>Write row group<br/>Validate schema| D
+    C -->|finish_writing<br/>Close writer<br/>Return stats| D
+    C -->|close<br/>Cleanup resources| D
+    D --> E[S3Uploader]
+    E -->|create_bucket_if_not_exists| F[S3 Bucket<br/>LocalStack/AWS]
+    E -->|upload_file<br/>Multipart upload<br/>Large files| F
+    E -->|Returns upload statistics| F
+    
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+    style E fill:#fff9c4
+    style F fill:#ffebee
 ```
 
 ## Key Features
@@ -265,3 +244,10 @@ Run tests:
 ```bash
 poetry run pytest -v
 ```
+
+## Related Documentation
+
+- **[README.md](README.md)** - Project overview and main documentation
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide
+- **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Comparison of writer implementations
+- **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into S3 streaming

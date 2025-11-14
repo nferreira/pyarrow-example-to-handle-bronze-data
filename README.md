@@ -10,6 +10,20 @@ A Python application that generates fake data, writes it to Parquet files in con
 - Support for both LocalStack (local development) and AWS S3
 - Comprehensive logging and progress tracking
 - Summary statistics for data generation, writing, and uploading
+- Two main entry points:
+  - **Standard Writer** (`main.py`): Production-ready Parquet writer with S3 upload
+  - **Generator Example** (`generator/main.py`): Educational example demonstrating Python generators with CSV verification
+
+## Documentation
+
+This project includes comprehensive documentation:
+
+- **[README.md](README.md)** - This file, main project overview
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide to get running in 5 minutes
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architecture and component documentation
+- **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Comparison of different Parquet writer implementations
+- **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into how ParquetWriter works with S3
+- **[src/parquet_s3_blocks_writer/generator/docs/crash-course.md](src/parquet_s3_blocks_writer/generator/docs/crash-course.md)** - Comprehensive Python generators tutorial
 
 ## Requirements
 
@@ -123,14 +137,35 @@ curl http://localhost:4566/_localstack/health
 
 ### 3. Run the Application
 
+#### Option A: Standard Parquet Writer (Production)
+
 ```bash
-# Using Poetry
+# Using Poetry entry point script
 poetry run parquet-s3-writer
+
+# Or using Python module syntax (recommended)
+poetry run python -m parquet_s3_blocks_writer.main
 
 # Or activate the virtual environment first
 poetry shell
-parquet-s3-writer
+python -m parquet_s3_blocks_writer.main
 ```
+
+#### Option B: Generator Example (Educational)
+
+```bash
+# Using Poetry with Python module syntax (recommended)
+poetry run python -m parquet_s3_blocks_writer.generator.main
+
+# Or activate the virtual environment first
+poetry shell
+python -m parquet_s3_blocks_writer.generator.main
+```
+
+**Note**: The generator example includes:
+- CSV verification (compares original data with decoded Parquet data)
+- Memory usage comparison between generator and non-generator approaches
+- Comprehensive memory allocation tracking
 
 ### 4. Verify Upload to LocalStack
 
@@ -178,25 +213,47 @@ parquet-s3-blocks-writer/
 ├── src/
 │   └── parquet_s3_blocks_writer/
 │       ├── __init__.py
-│       ├── main.py              # Main entry point
-│       ├── config.py            # Configuration management
-│       ├── data_generator.py   # Fake data generation
-│       ├── parquet_writer.py   # Parquet file writing
-│       └── s3_uploader.py      # S3 upload logic
-├── tests/                       # Test files (to be implemented)
-├── output/                      # Output directory for Parquet files
-├── pyproject.toml              # Poetry configuration
-├── .env.example                # Example environment variables
-├── .gitignore                  # Git ignore rules
-└── README.md                   # This file
+│       ├── main.py                      # Main entry point (standard writer)
+│       ├── config.py                    # Configuration management
+│       ├── data_generator.py            # Fake data generation
+│       ├── parquet_writer.py            # Parquet file writing
+│       ├── parquet_writer_interface.py  # Abstract interface for writers
+│       ├── s3_streaming_parquet_writer.py # Direct S3 streaming writer
+│       ├── s3_uploader.py               # S3 upload logic
+│       └── generator/
+│           ├── main.py                  # Generator example entry point
+│           └── docs/
+│               └── crash-course.md      # Python generators tutorial
+├── docs/
+│   └── parquet-writer-s3-output-stream.md  # Technical deep dive
+├── tests/                                # Test files
+├── output/                               # Output directory for Parquet files
+├── pyproject.toml                        # Poetry configuration
+├── .env.example                          # Example environment variables
+├── ARCHITECTURE.md                       # Architecture documentation
+├── QUICKSTART.md                         # Quick start guide
+├── WRITERS_COMPARISON.md                 # Writer implementations comparison
+├── .gitignore                            # Git ignore rules
+└── README.md                             # This file
 ```
 
 ## Usage Examples
 
-### Basic Usage
+### Standard Writer (Production)
 
 ```bash
+# Using Poetry entry point script
 poetry run parquet-s3-writer
+
+# Or using Python module syntax (recommended)
+poetry run python -m parquet_s3_blocks_writer.main
+```
+
+### Generator Example (Educational)
+
+```bash
+# Run the generator example with CSV verification
+poetry run python -m parquet_s3_blocks_writer.generator.main
 ```
 
 ### Customize via Environment Variables
@@ -207,7 +264,15 @@ NUM_RECORDS=1000000 BLOCK_SIZE_MB=2 poetry run parquet-s3-writer
 
 # Use a different bucket
 S3_BUCKET_NAME=my-custom-bucket poetry run parquet-s3-writer
+
+# Use LocalStack (default)
+USE_LOCALSTACK=true LOCALSTACK_ENDPOINT_URL=http://localhost:4566 poetry run python -m parquet_s3_blocks_writer.generator.main
 ```
+
+For more examples and detailed usage, see:
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick start examples
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture and usage patterns
+- **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Writer implementation details
 
 ## Development
 
@@ -344,6 +409,14 @@ If you run into memory issues with large datasets:
 
 1. Reduce `NUM_RECORDS` in your `.env` file
 2. The application processes data in blocks, so it should handle large datasets efficiently
+
+## Additional Resources
+
+- **[QUICKSTART.md](QUICKSTART.md)** - Get started quickly with step-by-step instructions
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Deep dive into the architecture and design decisions
+- **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Compare different Parquet writer implementations
+- **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical explanation of how ParquetWriter works with S3
+- **[src/parquet_s3_blocks_writer/generator/docs/crash-course.md](src/parquet_s3_blocks_writer/generator/docs/crash-course.md)** - Learn Python generators with practical examples
 
 ## License
 
