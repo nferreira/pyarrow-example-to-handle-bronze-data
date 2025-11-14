@@ -114,8 +114,8 @@ flowchart LR
         S2 --> S3[S3 Bucket]
     end
     
-    style Local fill:#fff4e1
-    style Streaming fill:#e8f5e9
+    style Local fill:#FF9800,stroke:#CC7700,stroke-width:2px,color:#fff
+    style Streaming fill:#70AD47,stroke:#507E32,stroke-width:2px,color:#fff
 ```
 
 | Feature | Local | S3 Streaming |

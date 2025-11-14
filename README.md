@@ -135,7 +135,57 @@ docker-compose up -d
 curl http://localhost:4566/_localstack/health
 ```
 
-### 3. Run the Application
+### 3. Create S3 Bucket (Optional)
+
+The application **automatically creates the S3 bucket** if it doesn't exist. However, you can also create it manually:
+
+#### Option A: Automatic Creation (Recommended)
+
+The bucket is created automatically when you run the application. Both `S3Uploader` and `S3StreamingParquetWriter` include methods that check for bucket existence and create it if needed:
+- `S3Uploader.create_bucket_if_not_exists()` - Called automatically during upload
+- `S3StreamingParquetWriter._ensure_bucket_exists()` - Called automatically when writing starts
+
+#### Option B: Manual Creation with AWS CLI
+
+```bash
+# For LocalStack
+aws --endpoint-url=http://localhost:4566 s3 mb s3://parquet-data-bucket
+
+# For AWS S3 (replace with your bucket name)
+aws s3 mb s3://parquet-data-bucket --region us-east-1
+```
+
+#### Option C: Manual Creation with Python
+
+```python
+import boto3
+from parquet_s3_blocks_writer.config import get_s3_config
+
+config = get_s3_config()
+s3_client = boto3.client(
+    's3',
+    endpoint_url=config.endpoint_url,
+    region_name=config.region_name,
+    aws_access_key_id=config.aws_access_key_id,
+    aws_secret_access_key=config.aws_secret_access_key
+)
+
+# Create bucket if it doesn't exist
+try:
+    s3_client.head_bucket(Bucket=config.bucket_name)
+    print(f"Bucket '{config.bucket_name}' already exists")
+except:
+    if config.region_name == "us-east-1":
+        s3_client.create_bucket(Bucket=config.bucket_name)
+    else:
+        s3_client.create_bucket(
+            Bucket=config.bucket_name,
+            CreateBucketConfiguration={'LocationConstraint': config.region_name}
+        )
+    print(f"Created bucket '{config.bucket_name}'")
+```
+
+### 4. Run the Application
 
 #### Option A: Standard Parquet Writer (Production)
 
@@ -167,7 +217,7 @@ python -m parquet_s3_blocks_writer.generator.main
 - Memory usage comparison between generator and non-generator approaches
 - Comprehensive memory allocation tracking
 
-### 4. Verify Upload to LocalStack
+### 5. Verify Upload to LocalStack
 
 ```bash
 # Install AWS CLI if not already installed

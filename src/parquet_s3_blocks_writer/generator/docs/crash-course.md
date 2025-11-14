@@ -828,11 +828,11 @@ flowchart LR
     C -->|create_dataframes| D[DataFrames]
     D -->|write_to_parquet_streaming| E[Parquet]
     
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style C fill:#e8f5e9
-    style D fill:#f3e5f5
-    style E fill:#ffebee
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style B fill:#FF9800,stroke:#CC7700,stroke-width:2px,color:#fff
+    style C fill:#70AD47,stroke:#507E32,stroke-width:2px,color:#fff
+    style D fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+    style E fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
 ```
 
 **2. Memory Efficiency**: By batching (e.g., 1000 records at a time), we never hold the entire dataset in memory.
@@ -858,10 +858,10 @@ flowchart TD
         G1 -.->|Only ~1K records<br/>in memory| Memory2[Low Memory Usage]
     end
     
-    style Without fill:#ffebee
-    style With fill:#e8f5e9
-    style Memory1 fill:#ffcdd2
-    style Memory2 fill:#c8e6c9
+    style Without fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
+    style With fill:#70AD47,stroke:#507E32,stroke-width:2px,color:#fff
+    style Memory1 fill:#EF5350,stroke:#C62828,stroke-width:2px,color:#fff
+    style Memory2 fill:#81C784,stroke:#507E32,stroke-width:2px,color:#fff
 ```
 
 This approach is production-ready and scales to datasets with millions of transactions while maintaining constant memory usage! 🚀

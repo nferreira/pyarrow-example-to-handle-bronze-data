@@ -64,6 +64,20 @@ Or manually:
 curl http://localhost:4566/_localstack/health
 ```
 
+## S3 Bucket Creation
+
+The application **automatically creates the S3 bucket** if it doesn't exist. You don't need to create it manually, but if you want to verify or create it yourself:
+
+```bash
+# Using AWS CLI (for LocalStack)
+aws --endpoint-url=http://localhost:4566 s3 mb s3://parquet-data-bucket
+
+# Verify bucket exists
+aws --endpoint-url=http://localhost:4566 s3 ls
+```
+
+The bucket name is configured via the `S3_BUCKET_NAME` environment variable (default: `parquet-data-bucket`).
+
 ## Expected Output
 
 You should see output similar to:
