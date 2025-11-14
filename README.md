@@ -23,7 +23,7 @@ This project includes comprehensive documentation:
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architecture and component documentation
 - **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Comparison of different Parquet writer implementations
 - **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into how ParquetWriter works with S3
-- **[src/parquet_s3_blocks_writer/generator/docs/crash-course.md](src/parquet_s3_blocks_writer/generator/docs/crash-course.md)** - Comprehensive Python generators tutorial
+- **[docs/python-generators-crash-course.md](docs/python-generators-crash-course.md)** - Comprehensive Python generators tutorial
 
 ## Requirements
 
@@ -271,11 +271,10 @@ parquet-s3-blocks-writer/
 │       ├── s3_streaming_parquet_writer.py # Direct S3 streaming writer
 │       ├── s3_uploader.py               # S3 upload logic
 │       └── generator/
-│           ├── main.py                  # Generator example entry point
-│           └── docs/
-│               └── crash-course.md      # Python generators tutorial
+│           └── main.py                  # Generator example entry point
 ├── docs/
-│   └── parquet-writer-s3-output-stream.md  # Technical deep dive
+│   ├── parquet-writer-s3-output-stream.md  # Technical deep dive
+│   └── python-generators-crash-course.md   # Python generators tutorial
 ├── tests/                                # Test files
 ├── output/                               # Output directory for Parquet files
 ├── pyproject.toml                        # Poetry configuration
@@ -466,7 +465,7 @@ If you run into memory issues with large datasets:
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Deep dive into the architecture and design decisions
 - **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Compare different Parquet writer implementations
 - **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical explanation of how ParquetWriter works with S3
-- **[src/parquet_s3_blocks_writer/generator/docs/crash-course.md](src/parquet_s3_blocks_writer/generator/docs/crash-course.md)** - Learn Python generators with practical examples
+- **[docs/python-generators-crash-course.md](docs/python-generators-crash-course.md)** - Learn Python generators with practical examples
 
 ## License
 

@@ -1,10 +1,10 @@
 # Python Generators: From Novice to Advanced
 
-> 📖 **See also**: [README.md](../../../../README.md) for project overview and [ARCHITECTURE.md](../../../../ARCHITECTURE.md) for architecture details.
+> 📖 **See also**: [README.md](../README.md) for project overview and [ARCHITECTURE.md](../ARCHITECTURE.md) for architecture details.
 
 I'll take you through a comprehensive journey of Python generators, building from fundamentals to advanced patterns.
 
-This tutorial is part of the Parquet S3 Blocks Writer project. To see a practical implementation using generators, check out `generator/main.py` in this project.
+This tutorial is part of the Parquet S3 Blocks Writer project. To see a practical implementation using generators, check out `src/parquet_s3_blocks_writer/generator/main.py` in this project.
 
 ## Part 1: The Foundation - Understanding the Problem
 
@@ -828,11 +828,11 @@ flowchart LR
     C -->|create_dataframes| D[DataFrames]
     D -->|write_to_parquet_streaming| E[Parquet]
     
-    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
-    style B fill:#FF9800,stroke:#CC7700,stroke-width:2px,color:#fff
-    style C fill:#70AD47,stroke:#507E32,stroke-width:2px,color:#fff
-    style D fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
-    style E fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
+    style A fill:#2563EB,stroke:#1E40AF,stroke-width:2px,color:#fff
+    style B fill:#3B82F6,stroke:#2563EB,stroke-width:2px,color:#fff
+    style C fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    style D fill:#8B5CF6,stroke:#7C3AED,stroke-width:2px,color:#fff
+    style E fill:#14B8A6,stroke:#0D9488,stroke-width:2px,color:#fff
 ```
 
 **2. Memory Efficiency**: By batching (e.g., 1000 records at a time), we never hold the entire dataset in memory.
@@ -858,10 +858,10 @@ flowchart TD
         G1 -.->|Only ~1K records<br/>in memory| Memory2[Low Memory Usage]
     end
     
-    style Without fill:#F44336,stroke:#C62828,stroke-width:2px,color:#fff
-    style With fill:#70AD47,stroke:#507E32,stroke-width:2px,color:#fff
-    style Memory1 fill:#EF5350,stroke:#C62828,stroke-width:2px,color:#fff
-    style Memory2 fill:#81C784,stroke:#507E32,stroke-width:2px,color:#fff
+    style Without fill:#EF4444,stroke:#DC2626,stroke-width:2px,color:#fff
+    style With fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
+    style Memory1 fill:#F87171,stroke:#DC2626,stroke-width:2px,color:#fff
+    style Memory2 fill:#34D399,stroke:#059669,stroke-width:2px,color:#fff
 ```
 
 This approach is production-ready and scales to datasets with millions of transactions while maintaining constant memory usage! 🚀
@@ -879,11 +879,11 @@ Generators are one of Python's most elegant features for writing memory-efficien
 
 ## Related Documentation
 
-- **[README.md](../../../../README.md)** - Project overview and main documentation
-- **[ARCHITECTURE.md](../../../../ARCHITECTURE.md)** - Detailed architecture documentation
-- **[QUICKSTART.md](../../../../QUICKSTART.md)** - Quick start guide
-- **[WRITERS_COMPARISON.md](../../../../WRITERS_COMPARISON.md)** - Comparison of writer implementations
-- **[docs/parquet-writer-s3-output-stream.md](../../../../docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into S3 streaming
+- **[README.md](../README.md)** - Project overview and main documentation
+- **[ARCHITECTURE.md](../ARCHITECTURE.md)** - Detailed architecture documentation
+- **[QUICKSTART.md](../QUICKSTART.md)** - Quick start guide
+- **[WRITERS_COMPARISON.md](../WRITERS_COMPARISON.md)** - Comparison of writer implementations
+- **[docs/parquet-writer-s3-output-stream.md](parquet-writer-s3-output-stream.md)** - Technical deep dive into S3 streaming
 
 ## Running the Generator Example
 
@@ -891,11 +891,11 @@ To see generators in action with this project:
 
 ```bash
 # Using Poetry with Python module syntax (recommended)
-poetry run python -m parquet_s3_blocks_writer.generator.main
+poetry run python -m src.parquet_s3_blocks_writer.generator.main
 
 # Or activate the virtual environment first
 poetry shell
-python -m parquet_s3_blocks_writer.generator.main
+python -m src.parquet_s3_blocks_writer.generator.main
 ```
 
 This example demonstrates:
@@ -903,3 +903,4 @@ This example demonstrates:
 - Memory-efficient data processing
 - CSV verification of Parquet data integrity
 - Comprehensive memory usage comparison
+

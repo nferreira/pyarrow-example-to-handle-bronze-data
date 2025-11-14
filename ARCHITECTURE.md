@@ -459,3 +459,4 @@ poetry run pytest -v
 - **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide
 - **[WRITERS_COMPARISON.md](WRITERS_COMPARISON.md)** - Comparison of writer implementations
 - **[docs/parquet-writer-s3-output-stream.md](docs/parquet-writer-s3-output-stream.md)** - Technical deep dive into S3 streaming
+- **[docs/python-generators-crash-course.md](docs/python-generators-crash-course.md)** - Comprehensive Python generators tutorial
