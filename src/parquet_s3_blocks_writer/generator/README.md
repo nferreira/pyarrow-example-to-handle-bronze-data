@@ -599,34 +599,50 @@ graph TB
 ### Memory Timeline
 
 ```mermaid
-gantt
-    title Memory Usage Over Time (Generator Approach)
-    dateFormat X
-    axisFormat %s
+flowchart LR
+    subgraph Timeline["Memory Usage Timeline (Generator Approach)"]
+        direction TB
+        
+        subgraph Batch1["Batch 1 Processing"]
+            B1A[Fetch Pages 1-10<br/>~10 KB] --> B1B[Create Batch 1<br/>~500 KB]
+            B1B --> B1C[Create DataFrame 1<br/>~500 KB]
+            B1C --> B1D[Write to Parquet<br/>~500 KB]
+            B1D --> B1E[Free Memory<br/>~0 KB]
+        end
+        
+        B1E --> Batch2
+        
+        subgraph Batch2["Batch 2 Processing"]
+            B2A[Fetch Pages 11-20<br/>~10 KB] --> B2B[Create Batch 2<br/>~500 KB]
+            B2B --> B2C[Create DataFrame 2<br/>~500 KB]
+            B2C --> B2D[Write to Parquet<br/>~500 KB]
+            B2D --> B2E[Free Memory<br/>~0 KB]
+        end
+        
+        B2E --> Batch3
+        
+        subgraph Batch3["Batch 3 Processing"]
+            B3A[Fetch Pages 21-30<br/>~10 KB] --> B3B[Create Batch 3<br/>~500 KB]
+            B3B --> B3C[Create DataFrame 3<br/>~500 KB]
+            B3C --> B3D[Write to Parquet<br/>~500 KB]
+            B3D --> B3E[Free Memory<br/>~0 KB]
+        end
+        
+        B3E --> Peak[Peak Memory<br/>~500 KB<br/>Constant!]
+    end
     
-    section Batch 1
-    Fetch Page 1-10    :0, 1s
-    Create Batch 1    :1s, 1s
-    Create DataFrame 1 :2s, 1s
-    Write to Parquet  :3s, 1s
-    Free Memory       :4s, 1s
-    
-    section Batch 2
-    Fetch Page 11-20  :4s, 1s
-    Create Batch 2    :5s, 1s
-    Create DataFrame 2 :6s, 1s
-    Write to Parquet  :7s, 1s
-    Free Memory       :8s, 1s
-    
-    section Batch 3
-    Fetch Page 21-30  :8s, 1s
-    Create Batch 3    :9s, 1s
-    Create DataFrame 3 :10s, 1s
-    Write to Parquet  :11s, 1s
-    Free Memory       :12s, 1s
+    style Batch1 fill:#D1FAE5,stroke:#059669,stroke-width:2px
+    style Batch2 fill:#D1FAE5,stroke:#059669,stroke-width:2px
+    style Batch3 fill:#D1FAE5,stroke:#059669,stroke-width:2px
+    style Peak fill:#10B981,stroke:#059669,stroke-width:3px,color:#fff
+    style B1E fill:#86EFAC,stroke:#059669,stroke-width:2px
+    style B2E fill:#86EFAC,stroke:#059669,stroke-width:2px
+    style B3E fill:#86EFAC,stroke:#059669,stroke-width:2px
 ```
 
 **Peak Memory**: Constant at ~500 KB (one batch)
+
+**Key Observation**: Memory usage follows a sawtooth pattern - it peaks at ~500 KB when processing each batch, then drops to near zero when memory is freed, maintaining a constant peak regardless of total dataset size.
 
 ---
 
