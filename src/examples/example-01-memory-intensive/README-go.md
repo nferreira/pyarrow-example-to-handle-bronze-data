@@ -120,10 +120,6 @@ sequenceDiagram
     
     Gen->>Ch: Close channel
     Ch->>Main: Range loop exits
-    
-    style Main fill:#3B82F6,stroke:#2563EB,stroke-width:2px,color:#fff
-    style Gen fill:#10B981,stroke:#059669,stroke-width:2px,color:#fff
-    style Ch fill:#F59E0B,stroke:#D97706,stroke-width:2px,color:#fff
 ```
 
 ### Channel Generator Pattern
